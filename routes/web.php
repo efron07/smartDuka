@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SalesPersonController;
@@ -41,6 +42,17 @@ Route::middleware(['auth'])->group(function () {
                 return redirect('/login')->withErrors(['role' => 'Unauthorized role.']);
         }
     });
+    
+    //-----User Routes --------
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('users', [UserController::class, 'store'])->name('users.store');
+    Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::patch('users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    //-----end of user routes --------
 
     // Role-specific Home Routes
     //super admin routes

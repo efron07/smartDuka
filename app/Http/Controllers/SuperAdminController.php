@@ -7,11 +7,11 @@ class SuperAdminController extends Controller
 {
     public function dashboard()
     {
-        return view('super_admin.home');
+        return view('super-admin.home');
     }
 
     public function settings()
     {
-        return view('super_admin.settings');
+        return view('super-admin.settings');
     }
 }

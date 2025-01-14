@@ -20,7 +20,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         if (!$user || !in_array($user->role, $roles)) {
-            return redirect('/login')->withErrors(['role' => 'Access denied for your role.']);
+            return redirect()->route('unauthorized');
         }
 
         return $next($request);

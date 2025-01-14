@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SalesPersonController;
 use App\Http\Controllers\StockPersonController;
+
+Route::get('/unauthorized', function () {
+    abort(403);
+})->name('unauthorized');
 
 // Login and Signup Routes
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
@@ -20,7 +25,7 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/signup', [AuthController::class, 'showSignup']);
 Route::post('/signup', [AuthController::class, 'signup']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // Redirect to Role-Based Dashboard
 Route::middleware(['auth'])->group(function () {
@@ -42,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
                 return redirect('/login')->withErrors(['role' => 'Unauthorized role.']);
         }
     });
-    
+
     //-----User Routes --------
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
@@ -53,6 +58,17 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     //-----end of user routes --------
+
+    //-----Business routes-----
+    Route::middleware([RoleMiddleware::class . ':super_admin'])->group(function () {
+        Route::get('businesses', [BusinessController::class, 'index'])->name('businesses.index'); // View all businesses
+        Route::get('businesses/create', [BusinessController::class, 'create'])->name('businesses.create'); // Show create form
+        Route::post('businesses', [BusinessController::class, 'store'])->name('businesses.store'); // Store new business
+        Route::get('businesses/{business}/edit', [BusinessController::class, 'edit'])->name('businesses.edit'); // Show edit form
+        Route::put('businesses/{business}', [BusinessController::class, 'update'])->name('businesses.update'); // Update business
+        Route::delete('businesses/{business}', [BusinessController::class, 'destroy'])->name('businesses.destroy'); // Delete business
+    });
+    //------end of business route ------
 
     // Role-specific Home Routes
     //super admin routes

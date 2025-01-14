@@ -48,7 +48,7 @@
 					<img src="{{ asset('assets/images/logo-icon.png')}}" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">Depot sym</h4>
+					<h6 class="logo-text">Smart Duka</h6>
 				</div>
 				<div class="toggle-icon ms-auto"><i class='bx bx-first-page'></i>
 				</div>
@@ -67,6 +67,20 @@
 						<li> <a href="/sales"><i class="bx bx-right-arrow-alt"></i>Sales</a>
 						</li>
 					</ul>
+				</li>
+                <li>
+					<a href="/users">
+						<div class="parent-icon"><i class='bx bx-user-pin'></i>
+						</div>
+						<div class="menu-title">Users</div>
+					</a>
+				</li>
+                <li>
+					<a href="/businesses">
+						<div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i>
+						</div>
+						<div class="menu-title">Busineses</div>
+					</a>
 				</li>
 
 
@@ -425,8 +439,21 @@
 						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="{{ asset('assets/images/avatars/avatar-2.png')}}" class="user-img" alt="user avatar">
 							<div class="user-info ps-3">
-								<p class="user-name mb-0">Martha Biswalo</p>
-								<p class="designattion mb-0">Deport Manager</p>
+								<p class="user-name mb-0">{{ auth()->user()->name }}
+                                </p>
+								<p class="designattion mb-0">
+                                    <strong>
+                                        @php
+                                            $roles = [
+                                                1 => 'Super Admin',
+                                                2 => 'Admin',
+                                                3 => 'Sales',
+                                                4 => 'Stock Person',
+                                            ];
+                                            echo $roles[auth()->user()->role] ?? 'Unknown';
+                                        @endphp
+                                    </strong>
+                                </p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
